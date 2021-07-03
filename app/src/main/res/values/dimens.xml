@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="search_input">15sp</dimen>
+    <dimen name="title_repo">18sp</dimen>
+    <dimen name="description_repo">15sp</dimen>
+    <dimen name="language_repo">12sp</dimen>
+    <dimen name="search_no_result">20sp</dimen>
+
+    <dimen name="search_item_padding">10dp</dimen>
+    <dimen name="search_item_margin">5dp</dimen>
+</resources>
