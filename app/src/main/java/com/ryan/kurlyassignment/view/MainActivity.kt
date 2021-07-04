@@ -2,7 +2,9 @@ package com.ryan.kurlyassignment.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,7 +13,7 @@ import com.ryan.kurlyassignment.R
 import com.ryan.kurlyassignment.model.SearchModel
 import com.ryan.kurlyassignment.viewmodel.SearchViewModel
 
-class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.Observer {
+class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.Observer, TextView.OnEditorActionListener {
     private lateinit var etSearch : EditText
     private lateinit var btnSearch : Button
     private lateinit var rvSearch : RecyclerView
@@ -30,6 +32,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.
         tvNoResult = findViewById(R.id.tvNoResult)
         pbLoading = findViewById(R.id.pbLoading)
 
+        etSearch.setOnEditorActionListener(this)
         btnSearch.setOnClickListener(this)
 
         SearchViewModel.setObserver(this)
@@ -89,6 +92,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.
             tvNoResult.visibility = View.GONE
             searchAdapter.setList(obj as ArrayList<SearchModel>)
         }
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+        when(actionId) {
+            EditorInfo.IME_ACTION_SEARCH -> {
+                requestRepoList()
+                return true
+            }
+        }
+        return false
     }
 
     override fun onClick(v: View?) {
