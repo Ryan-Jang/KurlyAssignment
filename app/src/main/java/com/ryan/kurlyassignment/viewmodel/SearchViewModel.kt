@@ -16,6 +16,7 @@ class SearchViewModel {
 
         private var resultList : ArrayList<SearchModel> = ArrayList()
         private var totalCount = -1
+        private var currentSearchString = ""
 
         fun setObserver(observer : Observer) {
             observerList.add(observer)
@@ -27,7 +28,10 @@ class SearchViewModel {
         }
 
         fun getRepoList(query : String) {
-            if (totalCount != -1) {
+            if (!currentSearchString.equals(query)) {
+                clearData()
+                currentSearchString = query
+            } else if (totalCount != -1) {
                 if (pageCount * perPage >= totalCount) {
                     notifyResult(false)
                     return
@@ -51,6 +55,13 @@ class SearchViewModel {
                     notifyResult(null)
                 }
             })
+        }
+
+        fun clearData() {
+            totalCount = -1
+            pageCount = 1
+            currentSearchString = ""
+            resultList.clear()
         }
 
         private fun notifyResult(obj : Any?) {
