@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy
 
 open class HttpAgent {
     companion object {
-        private lateinit var baseUrl : String
+        lateinit var baseUrl : String
         private lateinit var httpClient : OkHttpClient.Builder
         private lateinit var retrofitClient : Retrofit
         private lateinit var requestService : Proxy
