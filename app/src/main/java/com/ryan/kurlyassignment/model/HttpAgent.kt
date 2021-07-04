@@ -5,17 +5,20 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.GET
+import retrofit2.http.Query
 import java.io.IOException
 import java.lang.reflect.Proxy
 
 open class HttpAgent {
     companion object {
-        lateinit var baseUrl : String
+        var baseUrl : String = "https://api.github.com/search/"
         private lateinit var httpClient : OkHttpClient.Builder
         private lateinit var retrofitClient : Retrofit
-        private lateinit var requestService : Proxy
+        private lateinit var requestService : SearchService
 
         private fun getOkHttpClient(): OkHttpClient {
             httpClient = OkHttpClient.Builder()
@@ -43,9 +46,14 @@ open class HttpAgent {
             return retrofitClient
         }
 
-        fun <T> getRequestServiceInstance(t : Class<T>) : T {
-            requestService = getRetrofitInstance().create(t::class.java) as Proxy
-            return requestService as T
+        fun getRequestServiceInstance() : SearchService {
+            requestService = getRetrofitInstance().create(SearchService::class.java)
+            return requestService
         }
+    }
+
+    interface SearchService {
+        @GET("repositories")
+        fun searchRepo(@Query("q") query: String, @Query("page") page: Int = 1, @Query("per_page") perPage : Int = 50) : Call<SearchResponse>
     }
 }
