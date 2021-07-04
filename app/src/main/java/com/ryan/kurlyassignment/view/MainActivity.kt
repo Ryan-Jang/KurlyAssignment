@@ -77,6 +77,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.
 
     override fun notifyUpdate(obj: Any?) {
         pbLoading.visibility = View.GONE
+        if (obj is Boolean && !obj) {
+            return
+        }
+
         if (obj == null) {
             rvSearch.visibility = View.GONE
             tvNoResult.visibility = View.VISIBLE

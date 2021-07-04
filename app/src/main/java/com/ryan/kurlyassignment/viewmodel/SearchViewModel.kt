@@ -1,6 +1,7 @@
 package com.ryan.kurlyassignment.viewmodel
 
 import com.ryan.kurlyassignment.model.SearchAgent
+import com.ryan.kurlyassignment.model.SearchModel
 import com.ryan.kurlyassignment.model.SearchResponse
 import retrofit2.Call
 import retrofit2.Callback
@@ -13,6 +14,9 @@ class SearchViewModel {
         private var perPage = 50
         private var observerList : ArrayList<Observer> = ArrayList()
 
+        private var resultList : ArrayList<SearchModel> = ArrayList()
+        private var totalCount = -1
+
         fun setObserver(observer : Observer) {
             observerList.add(observer)
         }
@@ -23,12 +27,21 @@ class SearchViewModel {
         }
 
         fun getRepoList(query : String) {
+            if (totalCount != -1) {
+                if (pageCount * perPage >= totalCount) {
+                    notifyResult(false)
+                    return
+                }
+            }
+
             searchAgent.getSearch(query, pageCount, perPage, object : Callback<SearchResponse> {
                 override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
                     if (response.isSuccessful) {
-                        notifyResult(response.body()?.let { responseBody -> responseBody.repoList })
+                        totalCount = response.body()!!.resultTotalCount
+                        response.body()!!.repoList?.let { resultList.addAll(it) }
+                        notifyResult(resultList)
 
-                        if (pageCount * perPage < response.body()!!.resultTotalCount)
+                        if (pageCount * perPage < totalCount)
                             pageCount++
                     } else
                         notifyResult(null)
