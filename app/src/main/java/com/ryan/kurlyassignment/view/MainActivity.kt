@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.
     }
 
     private fun requestRepoList() {
-        if ("".equals(etSearch.text))
+        if ("".equals(etSearch.text.toString().trim()))
             Toast.makeText(this, getString(R.string.search_hint), Toast.LENGTH_SHORT).show()
         else {
             pbLoading.visibility = View.VISIBLE
