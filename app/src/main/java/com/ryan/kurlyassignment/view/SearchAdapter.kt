@@ -8,7 +8,7 @@ import com.ryan.kurlyassignment.R
 import com.ryan.kurlyassignment.model.SearchModel
 
 class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
-    private lateinit var itemList : ArrayList<SearchModel>
+    private var itemList : ArrayList<SearchModel>? = null
 
     fun setList(list : ArrayList<SearchModel>) {
         itemList = list
@@ -21,12 +21,12 @@ class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-        holder.tvTitle.text = itemList.get(position).repoName
-        holder.tvDescription.text = itemList.get(position).repoDescription
-        holder.tvLanguage.text = itemList.get(position).codeLanguage
+        holder.tvTitle.text = itemList?.get(position)?.repoName
+        holder.tvDescription.text = itemList?.get(position)?.repoDescription
+        holder.tvLanguage.text = itemList?.get(position)?.codeLanguage
     }
 
     override fun getItemCount(): Int {
-        return if (itemList == null) 0 else itemList.size
+        return if (itemList == null) 0 else itemList!!.size
     }
 }
