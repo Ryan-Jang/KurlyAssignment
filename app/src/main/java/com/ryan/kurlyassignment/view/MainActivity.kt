@@ -32,7 +32,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.
 
         btnSearch.setOnClickListener(this)
 
+        SearchViewModel.setObserver(this)
+
         initList()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        SearchViewModel.removeObserver(this)
     }
 
     private fun initList() {
