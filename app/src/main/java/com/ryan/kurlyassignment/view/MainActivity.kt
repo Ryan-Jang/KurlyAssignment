@@ -11,7 +11,7 @@ import com.ryan.kurlyassignment.R
 import com.ryan.kurlyassignment.model.SearchModel
 import com.ryan.kurlyassignment.viewmodel.SearchViewModel
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.Observer {
     private lateinit var etSearch : EditText
     private lateinit var btnSearch : Button
     private lateinit var rvSearch : RecyclerView
@@ -52,14 +52,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val itemTotalCount = recyclerView.adapter!!.itemCount -1
 
                 if (lastVisibleItemPosition == itemTotalCount) {
-
+                    requestRepoList()
                 }
             }
         })
     }
 
     private fun requestRepoList() {
+        if ("".equals(etSearch.text))
+            Toast.makeText(this, getString(R.string.search_hint), Toast.LENGTH_SHORT).show()
+        else {
+            pbLoading.visibility = View.VISIBLE
+            SearchViewModel.getRepoList(etSearch.text.toString())
+        }
+    }
 
+    override fun notifyUpdate(obj: Any?) {
+        pbLoading.visibility = View.GONE
+        if (obj == null) {
+            rvSearch.visibility = View.GONE
+            tvNoResult.visibility = View.VISIBLE
+        } else {
+            rvSearch.visibility = View.VISIBLE
+            tvNoResult.visibility = View.GONE
+            searchAdapter.setList(obj as ArrayList<SearchModel>)
+        }
     }
 
     override fun onClick(v: View?) {
