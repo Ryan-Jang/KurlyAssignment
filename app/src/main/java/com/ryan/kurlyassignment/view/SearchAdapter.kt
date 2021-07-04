@@ -5,11 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.ryan.kurlyassignment.R
+import com.ryan.kurlyassignment.model.SearchModel
 
 class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
-    private lateinit var itemList : ArrayList
+    private lateinit var itemList : ArrayList<SearchModel>
 
-    fun setList(list : ArrayList) {
+    fun setList(list : ArrayList<SearchModel>) {
         itemList = list
         notifyDataSetChanged()
     }
@@ -20,7 +21,9 @@ class SearchAdapter : RecyclerView.Adapter<SearchViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
-
+        holder.tvTitle.text = itemList.get(position).repoName
+        holder.tvDescription.text = itemList.get(position).repoDescription
+        holder.tvLanguage.text = itemList.get(position).codeLanguage
     }
 
     override fun getItemCount(): Int {
