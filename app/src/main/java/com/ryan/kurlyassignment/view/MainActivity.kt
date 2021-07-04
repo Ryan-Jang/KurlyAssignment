@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener, SearchViewModel.
     private fun initList() {
         searchAdapter = SearchAdapter()
         rvSearch.adapter = searchAdapter
+        rvSearch.layoutManager = LinearLayoutManager(this)
         rvSearch.addItemDecoration(
             DividerItemDecoration(this, LinearLayout.VERTICAL).apply {
                 getDrawable(R.drawable.shape_divider)?.let {
